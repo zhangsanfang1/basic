@@ -1,0 +1,126 @@
+<html>
+<head>
+	<meta name="viewport" content="initial-scale=1">
+	<style type="text/css">  
+		* {padding : 0 ; margin: 0; }  
+	   div {  
+	        margin-top : 10px;  
+	        width : 100%;  
+	        height : 100px;  
+	        overflow : hidden ;  
+	        -webkit-box-sizing : border-box ; /*应该可以删除  */ 
+	   }  
+	   /*单条线*/  
+	   .bt {  
+	        height: 1px;    /*写了1px的话，此div就只是一条边*/  
+	        background-image : -webkit-linear-gradient( top ,transparent , red) ;  
+	        background-repeat : no-repeat ;  
+	        background-position : top left ;  
+	        background-size : 100% 1px;  
+	   }  
+	    
+	   /*多条线*/  
+	   .pox {  
+	        background-image : -webkit-linear-gradient( top ,transparent , #000) , -webkit-linear-gradient( right ,transparent , #000) , -webkit-linear-gradient( bottom ,transparent , #000) , -webkit-linear-gradient( left ,transparent ,#000);  
+	        background-repeat : no-repeat ,no-repeat , no-repeat, no-repeat ;  
+	        background-position : top left , top right ,bottom left, top left ;  
+	        background-size : 100% 1px, 1px 100%, 100% 1px, 1px 100%;  
+	   } 
+      .box {  
+           position : relative ;  
+      }  
+      .box:before {  
+           position : absolute ;  
+           content : "" ;  
+           top : 0 ;  
+           left : 0 ;  
+           width : 100%;  
+           height : 1px;  
+           background-color : #000;  
+           -webkit-transform: scaleY(0.5);  
+           transform : scaleY(0.5);  
+           -webkit-transform-origin: 0 0 ;  
+           transform-origin: 0 0 ;  
+      }  
+      .box:after {  
+           position : absolute ;  
+           content : "" ;  
+           bottom : 0 ;  
+           left : 0 ;  
+           width : 100%;  
+           height : 1px;  
+           background-color : #000 ;  
+           -webkit-transform : scaleY(0.5) ;  
+           transform : scaleY(0.5) ;  
+           -webkit-transform-origin : 0 0 ;  
+           transform-origin : 0 0 ;  
+      }   
+      </style> 
+     <style type='text/css'>
+	    .border { border: 1px solid #999 }
+		@media screen and (-webkit-min-device-pixel-ratio: 2) {
+		    .border { border: 0.5px solid #999 }
+		}
+		@media screen and (-webkit-min-device-pixel-ratio: 3) {
+		    .border { border: 0.333333px solid #999 }
+		}
+
+		.radius-border{
+		    position: relative;
+		}
+		@media screen and (-webkit-min-device-pixel-ratio: 2){
+		    .radius-border:before{
+		        content: "";
+		        pointer-events: none; /* 防止点击触发 */
+		        box-sizing: border-box;
+		        position: absolute;
+		        width: 200%;
+		        height: 200%;
+		        left: 0;
+		        top: 0;
+		        border-radius: 8px;
+		        border:1px solid #999;
+		        -webkit-transform:scale(0.5);
+		        -webkit-transform-origin: 0 0;
+		        transform:scale(0.5);
+		        transform-origin: 0 0;
+		    }
+		}
+     </style>
+</head>
+<body>
+	<div style="width:160px;word-wrap:break-word;border:1px solid #333">
+		在这种重中之重重中之重重中之重重中之重重中之重重中之重重中之重重中之重
+	</div>
+
+	<div class= "bt"></div>  
+	<div class= "box">scaleY和scaleX</div>  
+	<div class= "bt"></div>  
+	<div class= "pox">background-image</div>
+	<div class= "bt"></div>  
+	<div class= "border">-webkit-min-device-pixel-ratio</div>
+	<div class= "bt"></div>  
+	<div class= "radius-border">scale</div>
+	<!-- 
+		方案一：使用background-image
+	        优点:可以设置单条,多条边框,可以设置颜色
+			缺点:1、大量使用渐变可能导致性能瓶颈；2、代码量大；3、多背景图片有兼容性问题
+		方案二：使用scaleY和:after、:before
+			缺点：圆角无法实现，实现4条边框比较麻烦，并且只能单独实现，如果嵌套，会对包含的效果产生不想要的效果，所以此方案配合:after和before独立使用较多。
+			比如画一个商品的边框四条线，容器的after和before可以画2条线，利用容器的父元素的after、before再画2条线。
+		方案三：用小数来写px值以及-webkit-min-device-pixel-ratio媒体查询
+			缺点: 安卓与低版本IOS不适用, 这个或许是未来的标准写法, 现在不做指望
+			如果使用less/sass的话只是加了1句mixin
+		方案四：用box-sizing：border-box和：before和scale来实现
+			需要注意<input type="button">是没有:before, :after伪元素的
+			优点: 其实不止是圆角, 其他的边框也可以这样做出来
+			缺点: 代码量也很大, 占据了伪元素, 容易引起冲突
+			推荐
+		方案五：flexible.js
+			将view的initial-scale设置为1/devicePixelRatio，<meta name="viewport" content="initial-scale=0.5, maximum-scale=0.5, minimum-scale=0.5, user-scalable=no">，这样1px就是代表的1个物理像素
+			仅仅支持ios
+	-->
+
+      
+</body> 
+</html>
